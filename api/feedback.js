@@ -26,13 +26,17 @@ export default async function handler(req, res) {
 
     await resend.emails.send({
       from: "Animal Restaurant Feedback <onboarding@resend.dev>",
-      to: "LJMansour02@gmail.com",
+      to: "lindamansour123@gmail.com",
       subject: "Animal Restaurant Tracker App Feedback Box",
       text: contact ? `${message}\n\nContact: ${contact}` : message,
+      replyTo: contact && contact.includes("@") ? contact : undefined,
     });
 
+
     return res.status(200).json({ ok: true });
-  } catch (e) {
-    return res.status(500).json({ error: e.message });
-  }
+      } catch (e) {
+        const msg = e && typeof e === "object" && "message" in e ? e.message : String(e);
+        return res.status(500).json({ error: msg });
+      }
+
 }
